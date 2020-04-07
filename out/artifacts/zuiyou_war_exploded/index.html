@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link type="text/css" rel="stylesheet" href="index.css"/>
+</head>
+<body>
+ <div class="body">
+     <div><a href="./Add.html" class="addBtn">新增商品</a></div>
+     <div class="table">
+         <table>
+             <thead>
+               <td>商品编号</td>
+               <td>商品名称</td>
+               <td>商品价格</td>
+               <td>商品类型</td>
+               <td>商品操作</td>
+             </thead>
+             <tbody class="tbody">
+<!--              <tr id = "tid">-->
+<!--                  <td>goodsId</td>-->
+<!--                  <td>goodsName</td>-->
+<!--                  <td>goodsPrice</td>-->
+<!--                  <td>goodsTypeId</td>-->
+<!--                  <td><button>删除</button><button>修改</button></td>-->
+<!--              </tr>-->
+             </tbody>
+         </table>
+     </div>
+
+ </div>
+
+<script type="text/javascript" src="http://code.jquery.com/jquery-latest.js"></script>
+<script>
+    $(document).ready(function () {
+        getGoods();
+    })
+
+    function getGoods() {
+        $.ajax({
+            url: "./getAllGoods",
+            type: 'get',
+            dataType: 'JSON',
+            success: function (data) {
+                list = data.data;
+                for(i = 0; i< list.length; i++){
+                    goods = list[i];
+                    $('.tbody').append("<tr id = \""+ goods.goodsId + "\">\n" +
+                        "                  <td>"+ goods.goodsId + "</td>\n" +
+                        "                  <td>"+ goods.goodsName + "</td>\n" +
+                        "                  <td>"+ goods.goodsPrice + "</td>\n" +
+                        "                  <td>"+ goods.goodsTypeName + "</td>\n" +
+                        "                  <td><button onclick='deleteGoods("+goods.goodsId+")'>删除</button><button onclick='toupdate("+goods.goodsId+")'>修改</button></td>\n" +
+                        "              </tr>") ;
+                }
+
+            }
+        })
+    }
+
+    function toupdate(id) {
+        window.location.href = "./Update.html?"+id;
+    }
+
+    function deleteGoods(id) {
+        param = {};
+        param.goodsId = id;
+        $.ajax({
+            url: "./delete",
+            type: 'post',
+            dataType: 'JSON',
+            data: param,
+            success: function (data) {
+                alert(data);
+
+            }
+        })
+        $("#"+id).remove();
+    }
+</script>
+</body>
+</html>

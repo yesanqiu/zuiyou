@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        .body{
+            width: 60%;
+            margin: 0 auto;
+            padding: 0 auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="body">
+        <form method="post" action="/add">
+            <div>商品名称:<input type="text" name="goodsName"></div>
+            <div>商品价格:<input type="text" name="goodsPrice"></div>
+            <div>商品类别:<select class="type" name="goodsTypeId">
+
+            </select>
+            </div>
+            <button type="submit">添加</button>
+        </form>
+    </div>
+    <script type="text/javascript" src="http://code.jquery.com/jquery-latest.js"></script>
+    <script>
+        $(document).ready(function () {
+            getGoods();
+        })
+
+        function getGoods() {
+            $.ajax({
+                url: "./getAllGoodsType",
+                type: 'get',
+                dataType: 'JSON',
+                success: function (data) {
+                    list = data.data;
+                    for(i = 0; i< list.length; i++){
+                        goodsType = list[i];
+                        $('.type').append("<option value=\""+goodsType.goodsTypeId+"\">"+goodsType.goodsTypeName+"</option>") ;
+                    }
+
+                }
+            })
+        }
+    </script>
+</body>
+</html>
